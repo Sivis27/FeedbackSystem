@@ -1,0 +1,127 @@
+
+.login-container {
+  border-radius: 10px;
+  width: 50%;
+  margin: 10% auto;
+  box-shadow: 0px 15px 33px rgba(0, 0, 0, 0.167996);
+}
+.left-side-container {
+  background: #002e72;
+  opacity: 0.88;
+  padding: 50px 20px;
+}
+.right-side-container {
+  background: #ffffff;
+  padding: 45px;
+}
+.logo1-icon{
+    width: 38px;
+    margin: 10px 5px;;
+}
+.logo-icon {
+  width: 39px;
+}
+.left-container{
+    margin: 30px 6px !important;
+}
+.right-container{
+    margin: 0px 5px !important;
+}
+.logo-first-text,
+.logo-second-text {
+  font-family: "Conv_ProximaNova-Bold";
+  font-size: 21px;
+  line-height: 25px;
+  color: #98cc4f;
+  padding-left: 20px;
+  padding-top: 10px;
+}
+.logo-second-text {
+  color: #fff !important;
+  padding-left: 5px;
+}
+.wecome-text {
+  font-family: "Conv_ProximaNova-Bold";
+  font-size: 32px;
+  line-height: 41px;
+  color: #ffffff;
+  padding: 0px 5px;
+  margin-bottom: 7px;
+}
+.welcome-list-content {
+  font-family: "Conv_ProximaNova-Bold";
+  font-size: 15px;
+  line-height: 21px;
+  color: #ffffff;
+  background-color: transparent !important;
+  padding: 5px 0px 5px 40px !important;
+}
+.welcome-list{
+    margin-left: -37px;
+}
+.signIn-text {
+  font-family: "Conv_ProximaNova-Bold";
+  font-size: 28px;
+  line-height: 35px;
+  color: #002e72;
+  margin-bottom: 0px;
+  margin-top: 12px;
+}
+.signIn-sub-text {
+  font-family: "Conv_ProximaNova-Bold";
+  font-size: 18px;
+  line-height: 21px;
+  color: #002e72;
+  margin-bottom: 5px;
+}
+.email,
+.password {
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  margin: 5px 0px;
+  font-size: 15px !important;
+  line-height: 18px;
+  color: #bebebe;
+}
+.signIn-button {
+  background: #000000;
+  background: #98cc4f !important;
+  font-family: "Conv_ProximaNova-Bold";
+  font-size: 15px !important;
+  width: 100%;
+  padding: 10px 0px !important;
+  border: none !important;
+}
+.hidden-icon {
+    width: 20px;
+    opacity: 0.5;
+    position: absolute;
+    top: 15px;
+    right: 10px;
+}
+.password-group{
+  position: relative;
+}
+.signIn-form{
+  padding-top: 10px;
+}
+ul {
+  list-style-type: none;
+}
+
+ul.welcome-list li:before {
+  content: "";
+  display: inline-block;
+  height: 23px;
+  width: 23px;
+  background-size: 23px;
+  background-image: url("../../img/tick.png");
+  background-repeat: no-repeat;
+  margin-right: 5px;
+  margin-top: 2px;
+  position: relative;
+  top: 5px;
+}
+.error{
+    color: red !important;
+}

@@ -1,0 +1,17 @@
+.p-2{   
+    border: 1px solid grey !important;
+    margin: 5px !important;
+    padding: 20px !important;
+    margin-top: 100px !important;
+    width: 150px !important;
+}
+
+.question-container{
+    background: #002e72;
+}
+
+.left-side-container {
+    background: #002e72;
+    opacity: 0.88;
+    padding: 50px 20px;
+  }
