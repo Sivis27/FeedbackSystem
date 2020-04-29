@@ -1,0 +1,877 @@
+swagger: "2.0"
+info:
+  description: "FeedBackManagementSystem - Using Spring 5 Reactive programming and React JS "
+  version: "1.0.0"
+  title: "FMS-Outreach Events"
+tags:
+- name: "Admin"
+  description: "Monitor,bulk emails,feedback questions,coinfigure user roles"
+- name: "PMO"
+  description: "This flow is same as Admin except that PMO has no access to configuring roles, questions and send feedback request emails"
+- name: "POC"
+  description: "This flow is same as PMO except that POC can see only the details of the events he/she is mapped to"
+- name: "Participants"
+  description: "FeedbackEmail,FeedbackSubmission,Acknowledged"  
+paths:
+  /login:
+    post:
+      tags:
+      - "Admin"
+      summary: "Logs user into the system"
+      description: ""
+      operationId: "loginUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "The user name for login"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "query"
+        description: "The password for login in clear text"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/UserCredentails"
+        400:
+          description: "Invalid username/password supplied"
+  /eventsDetails:
+    get:
+      tags:
+      - "Admin"
+      summary: "In Events Screen,Admin see all the events"
+      description: "Admin see all the events"
+      operationId: "getEventsScreenDetails"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eventId"
+        in: "query"
+        description: "eventId for the events"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+           type: "array"
+           items:
+             $ref: "#/definitions/DashBoardDetails"
+        400:
+          description: "Invalid status value"
+  /eventsListDetails:
+    get:
+      tags:
+      - "Admin"
+      summary: "View Event & Beneficiary details, Admin can view the details of the event"
+      description: ""
+      operationId: "getEventsListDetails"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eventId"
+        in: "query"
+        description: "eventId for the events"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+           type: "array"
+           items:
+              $ref: "#/definitions/BeneficiaryEventDetails"
+        400:
+          description: "Invalid status value"
+  /triggerEmails:
+   post:
+      tags:
+      - "Admin"
+      summary: "Creates list of users with given input array"
+      description: ""
+      operationId: "createUsersWithListInput"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of user object"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/EmailDetails"
+      responses:
+        default:
+          description: "successful operation"
+                  
+  /generateReports:
+    get:
+      tags:
+      - "Admin"
+      summary: "In Reports Screen, Admin can see the reports for events based on any filter criteria and email the filtered report to BU heads"
+      description: ""
+      operationId: "generateReports"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/GenerateReports"
+        400:
+          description: "Invalid status value"
+  /addOrRemoveUserRoles/{employeeId}:
+    get:
+      tags:
+      - "Admin"
+      summary: "ADD or Remove User Roles - PMO "
+      description: ""
+      operationId: "addOrRemovePMORoles"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "employeeId"
+        in: "path"
+        description: "The name that needs to be fetched. Use user1 for testing. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/RolesDetails"
+        400:
+          description: "Invalid status value"
+    put:
+      tags:
+      - "Admin"
+      summary: "Admin can add PMO roles for the active cognizant employee"
+      description: "This can only be done by the Admin Role."
+      operationId: "addPMO"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "employeeId"
+        in: "path"
+        description: "The Employee that needs to be fetched. Use Employee for testing."
+        required: true
+        type: "string"
+      responses:
+        default:
+          description: "successful operation"
+    delete:
+      tags:
+      - "Admin"
+      summary: "Remove PMO Role for Employee"
+      description: "This can only be done by the Admin Role."
+      operationId: "deleteUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "employeeId"
+        in: "path"
+        description: "The EmployeeId that needs to be removed/Deleted"
+        required: true
+        type: "string"
+      responses:
+        400:
+          description: "Invalid employeeId supplied"
+        404:
+          description: "EmpoyeeId not found" 
+  /addFeedbackQuestions{questionType}:
+    get:
+      tags:
+      - "Admin"
+      summary: "Admin can add/edit feedback questions in real-time."
+      description: ""
+      operationId: "addFeedbackQuestions"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "questionType"
+        in: "path"
+        description: "The name that needs to be fetched. Use user1 for testing. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/FeedbackQuestions"
+        400:
+          description: "Invalid status value"
+    post:
+      tags:
+      - "Admin"
+      summary: "Admin can add feedback questions in real-time"
+      operationId: "addQuestion"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "questionType"
+        in: "path"
+        description: "The Employee that needs to be fetched. Use Employee for testing."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/AddQuestion"
+        400:
+          description: "Invalid status value"
+    put:
+      tags:
+      - "Admin"
+      summary: "Admin can edit feedback questions in real-time"
+      description: "This can only be done by the Admin Role."
+      operationId: "editQuestion"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "questionType"
+        in: "path"
+        description: "The EmployeeId that needs to be removed/Deleted"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/EditQuestion"
+        400:
+          description: "Invalid status value"
+  /addAnswer:
+    post:
+      tags:
+      - "Admin"
+      summary: "Admin can add/remove PMO roles for the active cognizant employee"
+      description: "This can only be done by the Admin Role."
+      operationId: "addAnswer"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "questionType"
+        in: "path"
+        description: "The Employee that needs to be fetched. Use Employee for testing."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/AddAnswer"
+        400:
+          description: "Invalid status value"
+          
+  /pmo_login:
+    get:
+      tags:
+      - "PMO"
+      summary: "Logs user into the system"
+      description: ""
+      operationId: "pmo_loginUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "The user name for login"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "query"
+        description: "The password for login in clear text"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/UserCredentails"
+        400:
+          description: "Invalid username/password supplied"
+  /pmo_eventsDetails:
+    get:
+      tags:
+      - "PMO"
+      summary: "In Events Screen,Admin see all the events"
+      description: "Admin see all the events"
+      operationId: "pmo_getEventsScreenDetails"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eventId"
+        in: "query"
+        description: "eventId for the events"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/DashBoardDetails"
+        400:
+          description: "Invalid status value"
+  
+  /pmo_eventsListDetails:
+    get:
+      tags:
+      - "PMO"
+      summary: "View Event & Beneficiary details, Admin can view the details of the event"
+      description: ""
+      operationId: "pmo_getEventsListDetails"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eventId"
+        in: "query"
+        description: "eventId for the events"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/BeneficiaryEventDetails"
+        400:
+          description: "Invalid status value"
+  /pmo_triggerEmails:
+   post:
+      tags:
+      - "PMO"
+      summary: "Creates list of users with given input array"
+      description: ""
+      operationId: "pmo_createUsersWithListInput"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of user object"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/EmailDetails"
+      responses:
+        default:
+          description: "successful operation"
+                  
+  /pmo_generateReports:
+    get:
+      tags:
+      - "PMO"
+      summary: "In Reports Screen, Admin can see the reports for events based on any filter criteria and email the filtered report to BU heads"
+      description: ""
+      operationId: "pmo_generateReports"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/GenerateReports"
+        400:
+          description: "Invalid status value"        
+  
+  /poc_login:
+    get:
+      tags:
+      - "POC"
+      summary: "Logs user into the system"
+      description: ""
+      operationId: "poc_loginUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "query"
+        description: "The user name for login"
+        required: true
+        type: "string"
+      - name: "password"
+        in: "query"
+        description: "The password for login in clear text"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/UserCredentails"
+        400:
+          description: "Invalid username/password supplied"
+  /poc_eventsDetails:
+    get:
+      tags:
+      - "POC"
+      summary: "In Events Screen,Admin see all the events"
+      description: "Admin see all the events"
+      operationId: "poc_getEventsScreenDetails"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eventId"
+        in: "query"
+        description: "eventId for the events"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/DashBoardDetails"
+        400:
+          description: "Invalid status value"
+  
+  /poc_eventsListDetails:
+    get:
+      tags:
+      - "PMO"
+      summary: "View Event & Beneficiary details, Admin can view the details of the event"
+      description: ""
+      operationId: "poc_getEventsListDetails"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "eventId"
+        in: "query"
+        description: "eventId for the events"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/BeneficiaryEventDetails"
+        400:
+          description: "Invalid status value"
+  /poc_triggerEmails:
+   post:
+      tags:
+      - "POC"
+      summary: "Creates list of users with given input array"
+      description: ""
+      operationId: "poc_tiggerEmail"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "List of user object"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/EmailDetails"
+      responses:
+        default:
+          description: "successful operation"
+                  
+  /poc_generateReports:
+    get:
+      tags:
+      - "POC"
+      summary: "In Reports Screen, Admin can see the reports for events based on any filter criteria and email the filtered report to BU heads"
+      description: ""
+      operationId: "poc_generateReports"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/GenerateReports"
+        400:
+          description: "Invalid status value"         
+  /participant_feedbackView:
+    get:
+      tags:
+      - "Participants"
+      summary: ""
+      description: ""
+      operationId: "participant_feedbackView"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/LoadFeedbackView"
+        400:
+          description: "Invalid status value"        
+  /participant_notParticiapted:
+    get:
+      tags:
+      - "Participants"
+      summary: ""
+      description: ""
+      operationId: "participant_notParticiapted"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/NotParticipatedFeedback"
+        400:
+          description: "Invalid status value" 
+  /participant_unregisteredFeedback:
+    get:
+      tags:
+      - "Participants"
+      summary: ""
+      description: ""
+      operationId: "participant_unregisteredFeedback"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/UnregisteredFeedback"
+        400:
+          description: "Invalid status value"
+definitions:
+  UserCredentails:
+    type: "object"
+    properties:
+      userID:
+        type: "string"
+      tokenID:
+        type: "string"
+      businessUnit:
+        type: "string"
+      userRole:
+        type: "string"
+  DashBoardDetails:
+    type: "object"
+    properties:
+      eventName:
+        type: "string"
+      eventDate:
+        type: "string"
+        format: "date-time"
+      businessUnit:
+        type: "string"
+      status:
+        type: "string"
+      venueAddress:
+        type: "string"
+      totalVolunteers:
+        type: "integer"
+        format: "int32"
+        description: "Total Volunteers"
+      totalVolunteerHours:
+        type: "integer"
+        format: "int32"
+        description: "Total Volunteers Hours"
+      totalTravelHours:
+        type: "integer"
+        format: "int32"
+        description: "Total Travel Hours"
+  EmailDetails:
+    type: "object"
+    properties:
+      fromAddress:
+        type: "string"
+      body:
+         type: "string"
+      toPartcipantAddress:
+        type: "array"
+        xml:
+          name: "toAddress"
+          wrapped: true
+        items:
+          type: "string"
+  BeneficiaryEventDetails:
+    type: "object"
+    properties:
+      eventId:
+        type: "string"
+      eventDate:
+        type: "string"
+        format: "date-time"
+      status:
+        type: "string"
+      category:
+        type: "string"
+      location:
+        type: "string"
+      council:
+        type: "string"
+      feedbacks:
+        type: "string"
+      averageRating:
+        type: "string"
+      participated:
+        type: "array"
+        xml:
+          name: "participants"
+          wrapped: true
+        items:
+          $ref: "#/definitions/Participated"
+      notParticipated:
+        type: "string"
+      unregistered:
+        type: "string"  
+      statistics:
+         $ref: "#/definitions/Statistics"
+      pocDetails:
+          $ref: "#/definitions/POCDetails"
+  Participated:
+    type: "object"
+    properties:
+      rating:
+        type: "integer"
+        format: "int32"
+        description: "participants rating"
+      likes:
+        type: "string"
+        description: "participant likes"
+      disLikes:
+        type: "string"
+        description: "participant disLikes"  
+  Statistics:
+    type: "object"
+    properties:
+      averageRating:
+        type: "integer"
+        format: "int32"
+      volunteers:
+        type: "integer"
+        format: "int32"
+      volunteeringHours:
+        type: "integer"
+        format: "int32"
+      overallHours:
+        type: "integer"
+        format: "int32"
+      travelHours:
+        type: "integer"
+        format: "int32"
+      livesImpacted:
+        type: "integer"
+        format: "int32"  
+   
+  POCDetails:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int32"
+      employeeId:
+        type: "integer"
+        format: "int32"  
+      name:
+        type: "string"
+      contactNumber:
+        type: "integer"
+        format: "int32"
+         
+  GenerateReports:
+    type: "object"
+    properties:
+      eventId:
+        type: "string"
+      baseLocation:
+        type: "string"
+      beneficiaryName:
+        type: "string"
+      councilName:
+        type: "string"
+      eventName:
+        type: "string"
+      eventDescription:
+        type: "string"  
+      eventDate:
+        type: "string"
+        format: "date-time"
+      employeeId:
+        type: "string"    
+      employeeName:
+        type: "string"    
+      volunteerHours:
+        type: "integer"
+        format: "int32"
+      travelHours:
+        type: "integer"
+        format: "int32"
+      livesImpacted:
+        type: "integer"
+        format: "int32"
+      businessUnit:
+        type: "string"
+      status:
+        type: "string"
+      IIEPCategory:
+        type: "string"
+  RolesDetails:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"  
+  FeedbackQuestions:
+    type: "object"
+    properties:
+      questions:
+        type: "string"
+      totalAnswers:
+        type: "integer"
+        format: "int32"
+      feedBackType:
+        type: "string"
+  AddQuestion:
+    type: "object"
+    properties:
+      participated:
+        type: "string"
+      notParticipated:
+         type: "string"
+      unregistered:
+        type: "string"
+      allowmulitpleAnswers:
+         type: "string"
+      freeTextAnswer:
+         type: "string"
+      customQuestion:
+         type: "string"
+  EditQuestion:
+    type: "object"
+    properties:
+      participated:
+        type: "string"
+      notParticipated:
+         type: "string"
+      unregistered:
+        type: "string"
+      allowmulitpleAnswers:
+         type: "string"
+      freeTextAnswer:
+         type: "string"
+      customQuestion:
+         type: "string"
+  AddAnswer:
+    type: "object"
+    properties:
+      participated:
+        type: "string"
+      notParticipated:
+         type: "string"
+      unregistered:
+        type: "string"
+      allowmulitpleAnswers:
+         type: "string"
+      freeTextAnswer:
+         type: "string"
+      customQuestion:
+         type: "string"         
+      answer1:
+         type: "string"
+      answer2:
+         type: "string"
+      answer3:
+         type: "string"
+      answer4:
+         type: "string"   
+      answer5:
+         type: "string"         
+      answer6:
+         type: "string"   
+  LoadFeedbackView:
+    type: "object"
+    properties:
+      poutingFace:
+        type: "string"
+      sadFace:
+         type: "string"
+      neutralFace:
+        type: "string"
+      slightlySmilingFace:
+         type: "string"
+      inLoveFace:
+         type: "string"
+  NotParticipatedFeedback:
+    type: "object"
+    properties:
+      disclose:
+        type: "string"
+      personalCommitment:
+         type: "string"
+      officialwork:
+        type: "string"
+      notexpected:
+         type: "string"
+      aboutEvent:
+         type: "string"         
+      incorrectlyRegistered:
+         type: "string"         
+  UnregisteredFeedback:
+    type: "object"
+    properties:
+      disclose:
+        type: "string"
+      personalCommitment:
+         type: "string"
+      officialwork:
+        type: "string"
+      notexpected:
+         type: "string"
+      aboutEvent:
+         type: "string"         
+      incorrectlyRegistered:
+         type: "string"     
+  
