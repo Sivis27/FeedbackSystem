@@ -16,4 +16,7 @@ public interface EventSummaryRepository extends ReactiveCrudRepository<EventSumm
 			+ "from eventsummary  es ,eventparticipantinfo ep  where es.event_id = ep.event_id ")
 	Flux<EventSummary> generateReport();
 
+	@Query("select * from eventsummary as e inner join userinfo as u on	u.employeeid = e.poc_id  where u.rolename = :role")
+	Flux<EventSummary> getReportsByroles(String username);
+
 }

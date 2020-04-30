@@ -9,6 +9,7 @@ public class FMSUtils {
 	public static final String EVENTS_MAIL = "1";
 	public static final String EVENTSDETAILS_MAIL = "2";
 	public static final String REPORTS_MAIL = "3";
+	public static final String BULK_MAIL = "4";
 
 	/*
 	 * public static String fileNameWithOutExt(String fileName) { return

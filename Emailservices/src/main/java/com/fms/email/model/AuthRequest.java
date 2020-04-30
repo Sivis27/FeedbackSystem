@@ -1,29 +1,21 @@
 package com.fms.email.model;
 
-public class AuthRequest {
-	public AuthRequest(String emailType, String eventid) {
-		super();
-		this.emailType = emailType;
-		this.eventid = eventid;
-	}
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+public class AuthRequest {
 	private String emailType;
 	private String eventid;
-
-	public String getEmailType() {
-		return emailType;
-	}
-
-	public void setEmailType(String emailType) {
-		this.emailType = emailType;
-	}
-
-	public String getEventid() {
-		return eventid;
-	}
-
-	public void setEventid(String eventid) {
-		this.eventid = eventid;
-	}
-
+	private String role;
 }
